@@ -1,0 +1,107 @@
+import java.util.*;
+
+public class CowntactTracing2 {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        
+        int N = scan.nextInt();
+        String M = scan.next();
+        int ans = 0;
+        int cPointer = 0;
+        int start = 0;
+        int end = N;
+        int count[] = new int[(N/2)+1]; 
+        boolean startpoint = false;
+        boolean endpoint = false;
+        if (N >= 3 && M.charAt(0) == '1' && M.charAt(1) == '1' && M.charAt(2) == '0') {
+            count[0] = 3;
+            cPointer++;
+            start = 2;
+            startpoint = true;
+        } if (N >= 3 && M.charAt(N-1) == '1' && M.charAt(N-2) == '1' && M.charAt(N-3) == '0') {
+            count[cPointer] = 3;
+            cPointer++;
+            end = N-3;
+            endpoint = true;
+        }
+        //System.out.println(count[cPointer]);
+        //Find intervals of 1 and put it in count array
+        char prev = M.charAt(start);
+        int counter = 0;
+        for (int i = start; i < end; i++) {
+            if (M.charAt(i) == '1') {
+                if (prev == '1') {
+                    counter++;
+                } else {
+                    counter = 1;
+                }
+            } if ((M.charAt(i) == '0' && prev == '1')) {
+                count[cPointer] = counter;
+                counter = 0;
+                //System.out.println(count[cPointer]);
+                cPointer++;
+            }
+            prev = M.charAt(i);
+        }
+        count[cPointer] = counter;
+        //System.out.println(count[cPointer]);
+
+        int minpoint = 0;
+        for (int i = 0; i < (N/2)+1; i++) {
+            if (count[i] == 0) {
+                break;
+            }
+            if (count[minpoint] > count[i]) {
+                minpoint = i;
+            }
+        }
+        for (int i = 0; i < (N/2)+1; i++) {
+            if (count[i] == 0) {
+                break;
+            }
+            //System.out.print(count[i] + " ");
+        }
+        //System.out.println();
+        int tempint = count[minpoint];
+        while (count[minpoint] >= 3) {
+            for (int i = 0; i < (N/2)+1; i++) {
+                if (count[i] == 0) {
+                    break;
+                }
+                count[i] -= 2;
+            }
+        }
+        
+        for (int i = 0; i < (N/2)+1; i++) {
+                if (count[i] == 0) {
+                    break;
+                }
+                ans += count[i];
+        }
+        if (endpoint == true && tempint == count[minpoint]) {
+            ans--;
+        } if (startpoint == true && tempint == count[minpoint]) {
+            ans--;
+        }
+        System.out.println(ans);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }       
+}
